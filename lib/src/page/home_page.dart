@@ -4,6 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
 import 'package:news_app/src/bloc/home_bloc/home_bloc.dart';
 import 'package:news_app/src/model/article.dart';
+import 'package:news_app/src/page/extra/error_content.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,6 +27,12 @@ class _HomePageState extends State<HomePage> {
           builder: (context, state) {
             if (state is LoadingHomeState) {
               return const Center(child: CircularProgressIndicator());
+            }
+            if (state is ErrorHomeState) {
+              return ErrorContent(
+                onPressed: () =>
+                    ReadContext(context).read<HomeBloc>().add(FetchHomeEvent()),
+              );
             }
             if (state is SuccessHomeState) {
               final articles = state.articles;
@@ -65,16 +72,8 @@ class _BodyHomePageState extends State<_BodyHomePage> {
       child: SmartRefresher(
         controller: _refreshController,
         enablePullUp: true,
-        onRefresh: () {
-          ReadContext(context).read<HomeBloc>().add(FetchHomeEvent());
-          _refreshController.refreshCompleted();
-        },
-        onLoading: () {
-          ReadContext(context)
-              .read<HomeBloc>()
-              .add(LoadMoreHomeEvent(widget.end));
-          _refreshController.loadComplete();
-        },
+        onRefresh: _onRefresh,
+        onLoading: _loadMore,
         child: ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
           itemCount: widget.articles.length,
@@ -90,6 +89,16 @@ class _BodyHomePageState extends State<_BodyHomePage> {
         ),
       ),
     );
+  }
+
+  void _onRefresh() {
+    ReadContext(context).read<HomeBloc>().add(FetchHomeEvent());
+    _refreshController.refreshCompleted();
+  }
+
+  void _loadMore() {
+    ReadContext(context).read<HomeBloc>().add(LoadMoreHomeEvent(widget.end));
+    _refreshController.loadComplete();
   }
 }
 

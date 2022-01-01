@@ -8,11 +8,11 @@ class AppModule extends Module {
   @override
   List<Bind<Object>> get binds => [
         //factory
-        Bind.factory((i) => NewsService(Modular.get())),
+        Bind.factory((i) => NewsService(i())),
 
         //singleton
         Bind.singleton((i) => Dio(_option)),
-        Bind.singleton((i) => NewsRepository(Modular.get())),
+        Bind.singleton((i) => NewsRepository(i())),
       ];
 
   @override
