@@ -9,6 +9,12 @@
 .history
 .svn/
 
+# Generated file
+*.chopper.dart
+*.g.dart
+*.gr.dart
+*.freezed.dart
+
 # IntelliJ related
 *.iml
 *.ipr
