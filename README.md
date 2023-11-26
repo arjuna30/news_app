@@ -1,6 +1,10 @@
 # news_app
 
-A simple news app
+A simple news app using below technologies:
+- Auto Route as navigating manager
+- BloC as state management
+- Dio as Http package manager
+- GetIt as dependency injection
 
 ## Getting Started
 

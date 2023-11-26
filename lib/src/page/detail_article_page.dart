@@ -1,26 +1,36 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
+import 'package:news_app/src/component/app_router.gr.dart';
 import 'package:news_app/src/model/article.dart';
 
+@RoutePage()
 class DetailArticlePage extends StatelessWidget {
-  static final route = ChildRoute('/article/:id',
-      child: (context, args) => const DetailArticlePage());
-  const DetailArticlePage({Key? key}) : super(key: key);
+  static final route = AutoRoute(
+    page: DetailArticleRoute.page,
+    // path: '/article/:id',
+  );
+  const DetailArticlePage({
+    Key? key,
+    required this.article,
+    // @PathParam.inherit('id') required String id,
+  }) : super(key: key);
+
+  final Article article;
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: _BodyDetailArticlePage());
+    return Scaffold(body: _BodyDetailArticlePage(article));
   }
 }
 
 class _BodyDetailArticlePage extends StatelessWidget {
-  const _BodyDetailArticlePage({Key? key}) : super(key: key);
+  final Article article;
+  const _BodyDetailArticlePage(this.article, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Article article = Modular.args.data;
     final date = DateFormat.yMMMMEEEEd().format(article.createdAt);
     final slideShow = article.slideshow;
 

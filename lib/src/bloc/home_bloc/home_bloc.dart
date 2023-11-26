@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:equatable/equatable.dart';
+import 'package:news_app/main.dart';
 import 'package:news_app/src/model/article.dart';
 import 'package:news_app/src/repository/news_repository.dart';
 
@@ -15,7 +15,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   late List<Article> _baseArticles;
 
   static HomeBloc create(BuildContext context) =>
-      HomeBloc._(Modular.get())..add(FetchHomeEvent());
+      HomeBloc._(injector.get())..add(FetchHomeEvent());
 
   HomeBloc._(this._newsRepository) : super(HomeInitial()) {
     on<FetchHomeEvent>(_fetchArticles);

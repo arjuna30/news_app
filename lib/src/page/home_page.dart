@@ -1,16 +1,16 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
 import 'package:news_app/src/bloc/home_bloc/home_bloc.dart';
+import 'package:news_app/src/component/app_router.gr.dart';
 import 'package:news_app/src/model/article.dart';
 import 'package:news_app/src/page/extra/error_content.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+@RoutePage()
 class HomePage extends StatefulWidget {
-  static final route = ChildRoute(Modular.initialRoute,
-      child: (context, args) => const HomePage());
-
+  static final route = AutoRoute(page: HomeRoute.page, initial: true);
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -117,7 +117,7 @@ class _ArticleCard extends StatelessWidget {
     final date = DateFormat.yMMMMd().format(article.createdAt);
     return GestureDetector(
       onTap: () {
-        Modular.to.pushNamed('/article/${article.id}', arguments: article);
+        context.router.push(DetailArticleRoute(article: article));
       },
       child: Container(
         height: 230,
