@@ -7,7 +7,7 @@ import 'package:news_app/src/component/app_router.dart';
 final injector = GetIt.I;
 
 void main() {
-  AppModule.injectModule();
+  AppModule.injectModule(injector);
   runApp(const MyApp());
 }
 

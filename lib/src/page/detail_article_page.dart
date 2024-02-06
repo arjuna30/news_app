@@ -7,15 +7,8 @@ import 'package:news_app/src/model/article.dart';
 
 @RoutePage()
 class DetailArticlePage extends StatelessWidget {
-  static final route = AutoRoute(
-    page: DetailArticleRoute.page,
-    // path: '/article/:id',
-  );
-  const DetailArticlePage({
-    Key? key,
-    required this.article,
-    // @PathParam.inherit('id') required String id,
-  }) : super(key: key);
+  static final route = AutoRoute(page: DetailArticleRoute.page);
+  const DetailArticlePage({Key? key, required this.article}) : super(key: key);
 
   final Article article;
 
