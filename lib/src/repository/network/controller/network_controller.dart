@@ -2,17 +2,23 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:news_app/src/const.dart';
+import 'package:ua_client_hints/ua_client_hints.dart';
 
-part 'logger.dart';
+part 'interceptor.dart';
 
 class NetworkController {
   late Dio _dio;
+  final dioOption = BaseOptions(
+    baseUrl: kBaseUrl,
+    connectTimeout: 15000,
+    receiveTimeout: 15000,
+  );
+
   NetworkController() {
-    _dio = Dio(BaseOptions(
-      baseUrl: 'https://60a4954bfbd48100179dc49d.mockapi.io',
-      connectTimeout: 10000,
-      receiveTimeout: 10000,
-    ));
+    _dio = Dio(dioOption);
+    _dio.interceptors.add(_dioInterceptor);
+
     if (kDebugMode) {
       _dio.interceptors.add(_dioLoggerInterceptor);
     }
@@ -27,7 +33,7 @@ class NetworkController {
   }) async {
     try {
       if (headers != null) {
-        _dio.options.headers = headers;
+        _dio.options.headers.addAll(headers);
       }
       return await _dio.get(
         url,
@@ -50,7 +56,7 @@ class NetworkController {
       required CancelToken cancelToken}) async {
     try {
       if (headers != null) {
-        _dio.options.headers = headers;
+        _dio.options.headers.addAll(headers);
       }
       return await _dio.post(
         url,
@@ -73,6 +79,9 @@ class NetworkController {
       Map<String, dynamic>? queryParameters,
       required CancelToken cancelToken}) async {
     try {
+      if (headers != null) {
+        _dio.options.headers.addAll(headers);
+      }
       return await _dio.put(url,
           data: body,
           options: options,
@@ -93,6 +102,9 @@ class NetworkController {
       Map<String, dynamic>? queryParameters,
       required CancelToken cancelToken}) async {
     try {
+      if (headers != null) {
+        _dio.options.headers.addAll(headers);
+      }
       return await _dio.delete(url,
           options: options,
           queryParameters: queryParameters,

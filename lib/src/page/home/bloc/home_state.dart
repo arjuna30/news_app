@@ -14,7 +14,7 @@ class LoadingHomeState extends HomeState {
 }
 
 class SuccessHomeState extends HomeState {
-  final List<Article> articles;
+  final List<NewsDetail> articles;
   final int end;
   SuccessHomeState(this.articles, this.end);
 
