@@ -4,13 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:news_app/src/bloc/home_bloc/home_bloc.dart';
 import 'package:news_app/src/component/app_router.gr.dart';
-import 'package:news_app/src/model/article.dart';
 import 'package:news_app/src/page/extra/error_content.dart';
+import 'package:news_app/src/repository/model/news_response.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 @RoutePage()
 class HomePage extends StatefulWidget {
-  static final route = AutoRoute(page: HomeRoute.page, initial: true);
+  static final route =
+      AutoRoute(page: HomeRoute.page, initial: true, path: '/');
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -45,16 +46,10 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    ReadContext(context).read<HomeBloc>().close();
-    super.dispose();
-  }
 }
 
 class _BodyHomePage extends StatefulWidget {
-  final List<Article> articles;
+  final List<NewsDetail> articles;
   final int end;
   const _BodyHomePage({Key? key, required this.articles, required this.end})
       : super(key: key);
@@ -103,7 +98,7 @@ class _BodyHomePageState extends State<_BodyHomePage> {
 }
 
 class _ArticleCard extends StatelessWidget {
-  final Article article;
+  final NewsDetail article;
   final VoidCallback? onTap;
 
   const _ArticleCard({
@@ -114,10 +109,12 @@ class _ArticleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date = DateFormat.yMMMMd().format(article.createdAt);
+    final date = DateFormat.yMMMMd().format(article.publishedAt);
+    final urlImage = article.urlToImage;
     return GestureDetector(
       onTap: () {
-        context.router.push(DetailArticleRoute(article: article));
+        //TODO: Implement Webview
+        // context.router.push(DetailArticleRoute(article: article));
       },
       child: Container(
         height: 230,
@@ -127,9 +124,16 @@ class _ArticleCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(article.contentThumbnail,
-                height: 150, width: double.infinity, fit: BoxFit.cover),
-            const SizedBox(height: 10),
+            if (urlImage != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: Image.network(
+                  urlImage,
+                  height: 150,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
             Expanded(
               child: Text(
                 article.title,

@@ -1,20 +1,16 @@
 import 'package:news_app/main.dart';
-import 'package:news_app/src/model/article.dart';
-import 'package:news_app/src/repository/network/controller/network_controller.dart';
+import 'package:news_app/src/repository/model/news_response.dart';
+import 'package:news_app/src/repository/model/base_response.dart';
+import 'package:news_app/src/repository/network/controller/network_service.dart';
 
-class NewsService {
-  final NetworkController _network;
-  const NewsService(this._network);
+class NewsService extends NetworkService {
+  NewsService(super.network);
 
-  Future<List<Article>> getArticles() async {
-    final articles = <Article>[];
-    const _url = '/api/innocent/newsapp/articles';
-    final response = await _network.get(_url, cancelToken: injector.get());
-    final data = response.data as List;
-    for (final dataArticle in data) {
-      final article = Article.fromJson(dataArticle);
-      articles.add(article);
-    }
-    return articles;
+  Future<BaseResponse<NewsDetail>> getTopHeadlines(
+      [String? countryCode]) async {
+    const _url = '/top-headlines';
+    final response = await network.get(_url,
+        cancelToken: injector.get(), queryParameters: {'country': 'US'});
+    return defaultHttpResponseConverter<NewsDetail>(response);
   }
 }
