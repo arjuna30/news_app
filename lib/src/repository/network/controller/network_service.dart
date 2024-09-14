@@ -6,6 +6,8 @@ import 'package:news_app/src/repository/model/base_response.dart';
 import 'package:news_app/src/repository/network/controller/network_controller.dart';
 import 'package:news_app/src/repository/network/exception/repository_exception.dart';
 
+typedef JsonFactory<T> = T Function(Map<String, dynamic> toJson);
+
 abstract class NetworkService {
   NetworkService(this.network);
   final NetworkController network;

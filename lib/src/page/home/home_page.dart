@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:news_app/src/bloc/home_bloc/home_bloc.dart';
+import 'package:news_app/src/page/home/bloc/home_bloc.dart';
 import 'package:news_app/src/component/app_router.gr.dart';
 import 'package:news_app/src/page/extra/error_content.dart';
 import 'package:news_app/src/repository/model/news_response.dart';

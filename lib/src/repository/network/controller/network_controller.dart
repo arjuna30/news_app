@@ -7,8 +7,6 @@ import 'package:ua_client_hints/ua_client_hints.dart';
 
 part 'interceptor.dart';
 
-typedef JsonFactory<T> = T Function(Map<String, dynamic> toJson);
-
 class NetworkController {
   late Dio _dio;
   final dioOption = BaseOptions(

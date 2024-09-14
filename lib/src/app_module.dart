@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:news_app/src/component/app_router.dart';
 import 'package:news_app/src/repository/model/news_response.dart';
 import 'package:news_app/src/repository/network/controller/network_controller.dart';
+import 'package:news_app/src/repository/network/controller/network_service.dart';
 import 'package:news_app/src/repository/network/news_service.dart';
 import 'package:news_app/src/repository/news_repository.dart';
 
