@@ -113,8 +113,10 @@ class _ArticleCard extends StatelessWidget {
     final urlImage = article.urlToImage;
     return GestureDetector(
       onTap: () {
-        //TODO: Implement Webview
-        // context.router.push(DetailArticleRoute(article: article));
+        if (article.url != '-') {
+          final uri = Uri.parse(article.url);
+          context.router.push(CustomWebViewRoute(uri: uri));
+        }
       },
       child: Container(
         height: 230,
