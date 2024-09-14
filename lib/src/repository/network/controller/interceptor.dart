@@ -1,7 +1,18 @@
 part of 'network_controller.dart';
 
+final _dioInterceptor = InterceptorsWrapper(
+  onRequest: (options, handler) async {
+    final uas = await userAgentClientHintsHeader();
+
+    options.headers.addAll({'Authorization': kNewsApiKey});
+    options.headers.addAll(uas);
+
+    handler.next(options);
+  },
+);
+
 final _dioLoggerInterceptor = InterceptorsWrapper(
-  onRequest: (RequestOptions options, handler) {
+  onRequest: (RequestOptions options, handler) async {
     String headers = '';
     options.headers.forEach((key, value) {
       headers += '| $key: $value';

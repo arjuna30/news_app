@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:news_app/src/page/detail_article_page.dart';
 import 'package:news_app/src/page/home_page.dart';
 import 'app_router.gr.dart';
 
@@ -11,6 +10,5 @@ class AppRouter extends $AppRouter {
   @override
   final List<AutoRoute> routes = <AutoRoute>[
     HomePage.route,
-    DetailArticlePage.route,
   ];
 }

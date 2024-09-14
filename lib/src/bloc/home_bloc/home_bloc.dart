@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:equatable/equatable.dart';
 import 'package:news_app/main.dart';
-import 'package:news_app/src/model/article.dart';
+import 'package:news_app/src/repository/model/news_response.dart';
 import 'package:news_app/src/repository/news_repository.dart';
 
 part 'home_event.dart';
@@ -12,7 +12,7 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final NewsRepository _newsRepository;
-  late List<Article> _baseArticles;
+  late List<NewsDetail> _baseArticles;
 
   static HomeBloc create(BuildContext context) =>
       HomeBloc._(injector.get())..add(FetchHomeEvent());
@@ -26,9 +26,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       emit(LoadingHomeState());
       const end = 5;
-      _baseArticles = await _newsRepository.getArticles();
-      final articles = _baseArticles.sublist(0, end);
-      emit(SuccessHomeState(articles, end));
+      final response = await _newsRepository.getTopHeadlines();
+      if (response.error != null) {
+        emit(ErrorHomeState(response.error!.message));
+      } else {
+        _baseArticles = response.datas;
+        final articles = _baseArticles.sublist(0, end);
+        emit(SuccessHomeState(articles, end));
+      }
     } catch (e) {
       emit(ErrorHomeState(e));
     }
